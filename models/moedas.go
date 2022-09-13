@@ -8,7 +8,6 @@ type Moeda struct {
 	Descricao string  `json:"descricao"`
 	Preco     float64 `json:"preco"`
 	Votos     int     `json:"votos"`
-	Svg string `json:"svg"`
 }
 
 var Moedas []Moeda
