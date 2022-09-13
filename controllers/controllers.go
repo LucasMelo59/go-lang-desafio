@@ -70,8 +70,17 @@ func EditarMoeda(c *gin.Context) {
 }
 
 func Upvoter(c *gin.Context){
-	
-
+	var moeda models.Moeda
+	id := c.Params.ByName("id")
+	database.DB.First(&moeda , id)
+	if moeda.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": "Moeda não encontrada"})
+			return
+	}
+	moeda.Votos = moeda.Votos + 1
+	database.DB.Model(&moeda).UpdateColumns(moeda)
+	c.JSON(http.StatusOK, moeda)
 	}
 
 

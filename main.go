@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	
+
 	models.Moedas = []models.Moeda{}
 	database.ConectaComBancoDeDados()
 	routes.HandleResquest()
