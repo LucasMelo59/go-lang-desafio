@@ -9,5 +9,3 @@ type Moeda struct {
 	Preco     float64 `json:"preco"`
 	Votos     int     `json:"votos"`
 }
-
-var Moedas []Moeda
