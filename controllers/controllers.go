@@ -1,75 +1,91 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
-
 	"github.com/LucasMelo59/upvoter-go/database"
 	"github.com/LucasMelo59/upvoter-go/models"
-	"github.com/go-playground/validator/v10"
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
+
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "homepage")
 
+
+
+func TodasMoedas(c *gin.Context){
+	var moedas []models.Moeda
+	database.DB.Find(&moedas)
+	c.JSON(200, moedas)
 }
 
-
-func TodasMoedas(w http.ResponseWriter, r*http.Request){
-	var moeda []models.Moeda
-	database.DB.Find(&moeda)
-	json.NewEncoder(w).Encode(moeda)
-
-}
-
-func RetornaUmaMoeda(w http.ResponseWriter, r*http.Request) {
-
-	vars := mux.Vars(r)
-	id := vars["id"]
+func RetornaUmaMoeda(c * gin.Context) {
 	var moeda models.Moeda
-	database.DB.First(&moeda, id)
-	json.NewEncoder(w).Encode(moeda)
+	id := c.Params.ByName("id")
+	database.DB.First(&moeda , id)
+	if moeda.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": "Moeda não encontrada"})
+			return
+	}
+	c.JSON(http.StatusOK, moeda)
 }
 
-func CriaUmaNovaMoeda(w http.ResponseWriter, r*http.Request) {
+func CriaUmaNovaMoeda(c *gin.Context) {
 	var moeda models.Moeda
-	json.NewDecoder(r.Body).Decode(&moeda)
-	database.DB.Create(&moeda)
-	json.NewEncoder(w).Encode(moeda)
+	if err := c.ShouldBindJSON(&moeda); err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error()})
+				return 
+		}
+			database.DB.Create(&moeda)
+			c.JSON(http.StatusOK, moeda)
+		}
+	
+
+
+
+func Deleta(c *gin.Context){
+	var moeda models.Moeda
+	id := c.Params.ByName("id")
+	database.DB.First(&moeda , id)
+	if moeda.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"Not found": "Moeda não encontrada"})
+			return
+	}
+	database.DB.Delete(&moeda , id)
+	c.JSON(http.StatusOK, gin.H{"data": "Moeda Deletada"})
 }
 
-func Deleta(w http.ResponseWriter, r*http.Request){
-	vars := mux.Vars(r)
-	id := vars["id"]
+func EditarMoeda(c *gin.Context) {
 	var moeda models.Moeda
-	database.DB.Delete(&moeda, id)
-	json.NewEncoder(w).Encode(moeda)
+	id := c.Params.ByName("id")
+	database.DB.First(&moeda , id)
+	if err := c.ShouldBindJSON(&moeda); err != nil{
+		c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error()})
+				return 
+		}
+	database.DB.Model(&moeda).UpdateColumns(moeda)
+	c.JSON(http.StatusOK, moeda)
 }
 
-func EditarMoeda(w http.ResponseWriter, r*http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-	var moeda models.Moeda
-	database.DB.First(&moeda, id)
-	json.NewDecoder(r.Body).Decode(&moeda)
-	database.DB.Save(moeda)
-	json.NewEncoder(w).Encode(moeda)
+func Upvoter(c *gin.Context){
+	
 
-}
-
-func Upvoter(w http.ResponseWriter, r*http.Request){
-	vars := mux.Vars(r)
-	id := vars["id"]
-	var moeda models.Moeda
-	database.DB.First(&moeda, id)
-	if moeda.Id == 0 {
-		
 	}
 
-	}
 
+	func BuscaMoedaPorNome(c *gin.Context) {
+		var moeda models.Moeda
+		name := c.Param("name")
+		database.DB.Where(&models.Moeda{Nome: name}).First(&moeda)
+		if moeda.ID == 0 {
+			c.JSON(http.StatusNotFound, gin.H{
+				"Not found": "Moeda não encontrada"})
+				return
+		}
+		c.JSON(http.StatusOK, moeda)
+	}
 
 	
 

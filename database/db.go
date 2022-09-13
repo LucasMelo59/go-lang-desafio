@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 
+	"github.com/LucasMelo59/upvoter-go/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,5 +20,5 @@ func ConectaComBancoDeDados() {
 		log.Panic("Erro ao conectar")
 
 	}
-
+	DB.AutoMigrate(&models.Moeda{})
 }
