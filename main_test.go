@@ -116,7 +116,6 @@ func TestUpvoter(t *testing.T){
 
 	database.ConectaComBancoDeDados()
 	CriaMoedaMoc()
-	 
 	r := SetupDasRotasDeTeste()
 	r.GET("/upvoter/:id", controllers.Upvoter)
 	pathDeBusca := "/upvoter" + strconv.Itoa(ID)
@@ -126,5 +125,5 @@ func TestUpvoter(t *testing.T){
 	var moedaMock models.Moeda
 	json.Unmarshal(resp.Body.Bytes(), &moedaMock)
 	assert.Equal(t, 6 , moedaMock.Votos )
-	DeletaMoedaMock()
+	defer DeletaMoedaMock()
 }

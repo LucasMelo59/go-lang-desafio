@@ -5,8 +5,11 @@ import (
 	"github.com/LucasMelo59/upvoter-go/routes"
 )
 
-func main() {
 
+
+
+	
+func main() {
 	database.ConectaComBancoDeDados()
 	routes.HandleResquest()
 }

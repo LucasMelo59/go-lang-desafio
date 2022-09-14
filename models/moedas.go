@@ -8,4 +8,5 @@ type Moeda struct {
 	Descricao string  `json:"descricao"`
 	Preco     float64 `json:"preco"`
 	Votos     int     `json:"votos"`
-}
+	Src string  `json:"src"`
+	}

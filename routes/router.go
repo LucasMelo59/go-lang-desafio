@@ -2,17 +2,24 @@ package routes
 
 import (
 	"github.com/LucasMelo59/upvoter-go/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
+
+
+
+
 func HandleResquest() {
 	r := gin.Default()
-	r.GET("/api/moedas", controllers.TodasMoedas) 
+	r.Use(cors.Default())
+	r.GET("/moedas", controllers.TodasMoedas) 
 	r.GET("/moedas/:id", controllers.RetornaUmaMoeda) 
 	r.POST("/moedas/criar", controllers.CriaUmaNovaMoeda)
-	r.DELETE("/delete/moedas/:id", controllers.Deleta) 
-	r.PATCH("/editar/moedas/:id", controllers.EditarMoeda) 
+	r.DELETE("/moedas/delete/:id", controllers.Deleta) 
+	r.PATCH("/moedas/editar/:id", controllers.EditarMoeda) 
 	r.GET("moedas/nome/:nome", controllers.BuscaMoedaPorNome)
-	r.GET("/upvoter/:id", controllers.Upvoter)
+	r.GET("moedas/upvoter/:id", controllers.Upvoter)
 	r.Run()
 }
+
