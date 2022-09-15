@@ -21,7 +21,7 @@ func RetornaUmaMoeda(c * gin.Context) {
 	var moeda models.Moeda
 	id := c.Params.ByName("id")
 	database.DB.First(&moeda , id)
-	if moeda.ID == 0 {
+	if moeda.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{
 			"Not found": "Moeda não encontrada"})
 			return
@@ -47,7 +47,7 @@ func Deleta(c *gin.Context){
 	var moeda models.Moeda
 	id := c.Params.ByName("id")
 	database.DB.First(&moeda , id)
-	if moeda.ID == 0 {
+	if moeda.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{
 			"Not found": "Moeda não encontrada"})
 			return
@@ -73,22 +73,36 @@ func Upvoter(c *gin.Context){
 	var moeda models.Moeda
 	id := c.Params.ByName("id")
 	database.DB.First(&moeda , id)
-	if moeda.ID == 0 {
+	if moeda.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{
 			"Not found": "Moeda não encontrada"})
 			return
 	}
 	moeda.Votos = moeda.Votos + 1
 	database.DB.Model(&moeda).UpdateColumns(moeda)
-	c.JSON(http.StatusOK, moeda)
+	
 	}
+
+	func Downvoter(c *gin.Context){
+		var moeda models.Moeda
+		id := c.Params.ByName("id")
+		database.DB.First(&moeda , id)
+		if moeda.Id == 0 {
+			c.JSON(http.StatusNotFound, gin.H{
+				"Not found": "Moeda não encontrada"})
+				return
+		}
+		moeda.Votos = moeda.Votos - 1
+		database.DB.Model(&moeda).UpdateColumns(moeda)
+		
+		}
 
 
 	func BuscaMoedaPorNome(c *gin.Context) {
 		var moeda models.Moeda
 		name := c.Param("name")
 		database.DB.Where(&models.Moeda{Nome: name}).First(&moeda)
-		if moeda.ID == 0 {
+		if moeda.Id == 0 {
 			c.JSON(http.StatusNotFound, gin.H{
 				"Not found": "Moeda não encontrada"})
 				return

@@ -27,7 +27,7 @@ func SetupDasRotasDeTeste() *gin.Engine {
 func CriaMoedaMoc() {
 	moeda := models.Moeda{Nome: "teste", Descricao: "hahaha", Preco: 22.90, Votos: 5 }
 	database.DB.Create(&moeda)
-	ID = int(moeda.ID)
+	ID = int(moeda.Id)
 }
 
 func DeletaMoedaMock(){
