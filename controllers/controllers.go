@@ -94,7 +94,7 @@ func Upvoter(c *gin.Context){
 		}
 		moeda.Votos = moeda.Votos - 1
 		database.DB.Model(&moeda).UpdateColumns(moeda)
-		
+		c.JSON(http.StatusOK, moeda)
 		}
 
 

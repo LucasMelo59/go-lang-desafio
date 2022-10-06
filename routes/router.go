@@ -20,7 +20,7 @@ func HandleResquest() {
 	r.PATCH("/moedas/editar/:id", controllers.EditarMoeda) 
 	r.GET("moedas/nome/:nome", controllers.BuscaMoedaPorNome)
 	r.POST("moedas/upvoter/:id", controllers.Upvoter)
-	r.GET("moedas/downvoter/:id", controllers.Downvoter)
+	r.POST("moedas/downvoter/:id", controllers.Downvoter)
 	r.Run()
 }
 
